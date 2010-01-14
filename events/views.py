@@ -7,18 +7,19 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
 from django.views.generic import list_detail
 
-from models import *
+from events.models import *
     
-def event_detail(request, event_id, event_slug):
+def event_detail(request, event_id, event_slug, template_name = 'event.html'):
     event = get_object_or_404(Event, id=event_id, slug=event_slug)
     name = request.session.get('name', None)
     return render_to_response(
-        'event.html',
+        template_name,
         locals(),
         context_instance = RequestContext(request)
     )
     
-def event_time_detail(request, event_time_id, event_slug):
+def event_time_detail(request, event_time_id, event_slug,
+                        template_name = 'event_time.html'):
     event_time = get_object_or_404(EventTime,
         id = event_time_id,
         event__slug = event_slug)
@@ -36,7 +37,7 @@ def event_time_detail(request, event_time_id, event_slug):
             request,
             queryset = EventTime.objects.filter(id=event_time_id,
                 event__slug = event_slug),
-            template_name = 'event_time.html',
+            template_name = template_name,
             object_id = event_time_id,
             extra_context = {'attending':attending, 
                              'name':request.session.get('name', None),
@@ -45,7 +46,8 @@ def event_time_detail(request, event_time_id, event_slug):
         )
     
 @require_http_methods(['POST',])
-def register_for_event(request, event_time_id, event_slug):
+def register_for_event(request, event_time_id, event_slug,
+                        template_name = 'json/register.json'):
     ''' Register for Event '''
     message_type, message_body = 'ERROR', ''
     event_time = get_object_or_404(EventTime, id = event_time_id, event__slug = event_slug)
@@ -75,7 +77,7 @@ def register_for_event(request, event_time_id, event_slug):
     message_type = 'SUCCESS'
     message_body = 'You have been registered for %s' % event_time.event
     return render_to_response(
-            'json/register.json',
+            template_name,
             locals(),
             context_instance = RequestContext(request)                  
         )

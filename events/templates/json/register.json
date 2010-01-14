@@ -1,0 +1,4 @@
+{'messageType':'{{message_type}}', 
+	'messageBody':'{{message_body}}',
+	'full_name':'{{full_name}}',
+}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ event.title }}</h1>
+<h2>Current Event Times</h2>
+{% for eventtime in event.event_times.future_event_times %}
+	<h3>{{ eventtime.start|date:"M d, Y - h:i a" }}</h3>
+	{% ifnotequal eventtime.attendee_set.all.count 0 %}
+		<strong>Attendees</strong>
+		{% with eventtime.attendee_set.all as attendee_set %}
+			{% include "partials/attendee_list.html" %}
+		{% endwith %}
+	{% else %}
+		No one attending yet
+	{% endifnotequal %}
+{% endfor %}
+<br /><br />
+<h2>Past Event Times</h2>
+{% for eventtime in event.event_times.past_event_times %}
+	<h3>{{ eventtime.start|date:"M d, Y - h:i a" }}</h3>
+	{% ifnotequal eventtime.attendee_set.all.count 0 %}
+		<strong>Attendees</strong>
+		{% with eventtime.attendee_set.all as attendee_set %}
+			{% include "partials/attendee_list.html" %}
+		{% endwith %}
+		<br /><br />
+	{% else %}
+		No one attended<br /><br />
+	{% endifnotequal %}
+{% endfor %}
+{% endblock %}

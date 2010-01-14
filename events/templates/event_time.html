@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h1><a href="{{event_time.event.get_absolute_url }}">{{ event_time.event.title }}</a></h1>
+{{ event_time.start|date:"M d, Y - h:i a" }}<br />
+<br />
+<h3> Attendees</h3>
+{% with event_time.attendee_set.all as attendee_set %}
+{% include "partials/attendee_list.html" %}
+{% endwith %}
+{% if not past and not attending %}
+	<br /><br />
+	<div id="attending_question">
+		Are you attending?<br />
+	{% if user.is_authenticated %}
+		{# This should show for people who are logged in and aren't already attending #}
+		<form action="{% url event_time_register event_time.id event_time.event.slug %}" id="attending_form"></form>
+		<input type="hidden" value="{{ user.id }}" id="attending_user_id" />
+		<input type="submit" value="I am attending!" id="attending_loggedin_submit" />
+	{% else %}
+		{# This should only show for people who aren't logged in #}
+		<form action="{% url event_time_register event_time.id event_time.event.slug %}" id="attending_form"></form>
+		<label for="attending"><strong>Name</strong>: </label><input type="text" id="attending" name="attending" /><br /><br />
+		<input type="submit" value="Submit" id="attending_submit" />
+	{% endif %}
+	</div>
+{% endif %}
+{% endblock %}

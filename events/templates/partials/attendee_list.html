@@ -1,0 +1,16 @@
+<ul>
+{% for attendee in attendee_set %}
+	<li>{{ attendee }}
+	{% ifequal attendee.user user %} - thats you
+	{% else %}
+	{% ifequal attendee.name name %} - thats you{% endifequal %}
+	{% endifequal %}
+	</li>
+{% empty %}
+{% if past %}
+No one attended <br /><br />
+{% else %}
+No one is attending yet<br /><br />
+{% endif %}
+{% endfor %}
+</ul>

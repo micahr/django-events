@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import EventTime, Event, Attendee
+from events.models import EventTime, Event, Attendee
 
 class EventTimeInline(admin.TabularInline):
     model = EventTime

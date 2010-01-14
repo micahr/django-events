@@ -1,0 +1,15 @@
+<ul>
+{% for event in object_list %}
+	{% for eventtime in event.event_times.future_event_times %}
+    <li class="{% cycle 'odd' 'even' %}">
+		<a href="{{ eventtime.get_absolute_url }}">
+		{{ event }} - {{ eventtime.start|date:"M d, Y - h:i a" }} 
+		{% for attendee in eventtime.attendee_set.all %}
+			{% ifequal attendee.user user %} - Attending {% endifequal %}
+		{% endfor %}
+		</a><br />	
+    </li>
+	{% empty %}
+	{% endfor %}
+{% endfor %}
+</ul>

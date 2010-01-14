@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 
-from views import home, event_time_detail, register_for_event, event_detail
-from models import Event, EventTime
+from events.views import *
+from events.models import Event, EventTime
 
 urlpatterns = patterns('',
     url(r'^(?P<event_id>\d+)-(?P<event_slug>[\w\-]+)/$', event_detail,
